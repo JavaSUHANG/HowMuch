@@ -2,6 +2,7 @@ package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.dto.ApiResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequest;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,24 @@ public class TransactionController {
         Transaction transaction = transactionService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("입출금 내역 등록에 성공하였습니다.", transaction));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Transaction>> updateTransaction(
+            @PathVariable("id") Long id,
+            @RequestBody TransactionUpdateRequest request
+    ) {
+        if (request.amount() == null || request.transactionType() == null) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.fail("금액과 입출금 유형은 필수 입력 항목입니다."));
+        }
+
+        Transaction transaction = transactionService.update(id, request);
+        if (transaction == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.fail("존재하지 않는 입출금 내역입니다. id : " + id));
+        }
+        return ResponseEntity.ok(ApiResponse.success("입출금 내역 수정에 성공하였습니다.", transaction));
     }
 
     @GetMapping

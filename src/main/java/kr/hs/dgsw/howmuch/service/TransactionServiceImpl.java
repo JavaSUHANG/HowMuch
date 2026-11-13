@@ -1,6 +1,7 @@
 package kr.hs.dgsw.howmuch.service;
 
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequest;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,23 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction create(TransactionCreateRequest request) {
         Transaction transaction = new Transaction(
+                request.amount(),
+                request.transactionType(),
+                request.category(),
+                request.description(),
+                request.transactionDate()
+        );
+        return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public Transaction update(Long id, TransactionUpdateRequest request) {
+        Transaction transaction = findById(id);
+        if (transaction == null) {
+            return null;
+        }
+
+        transaction.update(
                 request.amount(),
                 request.transactionType(),
                 request.category(),

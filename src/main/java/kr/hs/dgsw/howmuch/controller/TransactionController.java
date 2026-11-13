@@ -1,6 +1,7 @@
 package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.dto.ApiResponse;
+import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,20 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 public class TransactionController {
     private final TransactionService transactionService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Transaction>> createTransaction(
+            @RequestBody TransactionCreateRequest request
+    ) {
+        if (request.amount() == null || request.transactionType() == null) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.fail("금액과 입출금 유형은 필수 입력 항목입니다."));
+        }
+
+        Transaction transaction = transactionService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("입출금 내역 등록에 성공하였습니다.", transaction));
+    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Transaction>>> getAllTransactions() {

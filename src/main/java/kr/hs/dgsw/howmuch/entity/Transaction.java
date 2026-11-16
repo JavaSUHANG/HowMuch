@@ -55,4 +55,11 @@ public class Transaction {
         this.category = category;
         this.description = description;
     }
+
+    /** 선택 입력과 날짜를 포함한 생성자 */
+    public Transaction(int amount, TransactionType transactionType, String category, String description,
+                       LocalDate transactionDate) {
+        this(amount, transactionType, category, description);
+        this.transactionDate = transactionDate;
+    }
 }

@@ -7,6 +7,7 @@ import kr.hs.dgsw.howmuch.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -57,6 +58,15 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
+    }
+
+    @Override
+    public List<Transaction> findByYearAndMonth(int year, int month) {
+        YearMonth targetMonth = YearMonth.of(year, month);
+        return transactionRepository.findByTransactionDateBetween(
+                targetMonth.atDay(1),
+                targetMonth.atEndOfMonth()
+        );
     }
 
     @Override

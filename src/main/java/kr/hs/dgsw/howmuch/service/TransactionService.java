@@ -11,5 +11,6 @@ public interface TransactionService {
     Transaction update(Long id, TransactionUpdateRequest request);
     boolean delete(Long id);
     List<Transaction> findAll();
+    List<Transaction> findByYearAndMonth(int year, int month);
     Transaction findById(Long id);
 }

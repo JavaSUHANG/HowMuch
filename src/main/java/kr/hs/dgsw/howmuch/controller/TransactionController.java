@@ -64,6 +64,21 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(transactionService.findAll()));
     }
 
+    @GetMapping("/monthly")
+    public ResponseEntity<ApiResponse<List<Transaction>>> getMonthlyTransactions(
+            @RequestParam("year") int year,
+            @RequestParam("month") int month
+    ) {
+        if (year < 1 || year > 999_999_999 || month < 1 || month > 12) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.fail("연도와 월을 올바르게 입력해 주세요."));
+        }
+        return ResponseEntity.ok(ApiResponse.success(
+                "월별 입출금 내역 조회에 성공하였습니다.",
+                transactionService.findByYearAndMonth(year, month)
+        ));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Transaction>> getTransactionById(@PathVariable("id") Long id) {
         Transaction transaction = transactionService.findById(id);

@@ -50,6 +50,15 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success("입출금 내역 수정에 성공하였습니다.", transaction));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTransaction(@PathVariable("id") Long id) {
+        if (!transactionService.delete(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.fail("존재하지 않는 입출금 내역입니다. id : " + id));
+        }
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<Transaction>>> getAllTransactions() {
         return ResponseEntity.ok(ApiResponse.success(transactionService.findAll()));

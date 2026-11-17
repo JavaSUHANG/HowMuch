@@ -9,6 +9,7 @@ import java.util.List;
 public interface TransactionService {
     Transaction create(TransactionCreateRequest request);
     Transaction update(Long id, TransactionUpdateRequest request);
+    boolean delete(Long id);
     List<Transaction> findAll();
     Transaction findById(Long id);
 }

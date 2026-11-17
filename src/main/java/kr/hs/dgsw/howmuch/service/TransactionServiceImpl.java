@@ -44,6 +44,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public boolean delete(Long id) {
+        Transaction transaction = findById(id);
+        if (transaction == null) {
+            return false;
+        }
+
+        transactionRepository.delete(transaction);
+        return true;
+    }
+
+    @Override
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }

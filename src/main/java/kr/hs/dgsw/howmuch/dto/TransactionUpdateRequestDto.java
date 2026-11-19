@@ -4,7 +4,7 @@ import kr.hs.dgsw.howmuch.entity.TransactionType;
 
 import java.time.LocalDate;
 
-public record TransactionUpdateRequest(
+public record TransactionUpdateRequestDto(
         Integer amount,
         TransactionType transactionType,
         String category,

@@ -2,7 +2,7 @@ package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.dto.ApiResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
-import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class TransactionController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Transaction>> updateTransaction(
             @PathVariable("id") Long id,
-            @RequestBody TransactionUpdateRequest request
+            @RequestBody TransactionUpdateRequestDto request
     ) {
         if (request.amount() == null || request.transactionType() == null) {
             return ResponseEntity.badRequest()

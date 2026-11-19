@@ -2,6 +2,7 @@ package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.dto.ApiResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.service.TransactionService;
@@ -76,6 +77,14 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(
                 "월별 입출금 내역 조회에 성공하였습니다.",
                 transactionService.findByYearAndMonth(year, month)
+        ));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<ApiResponse<TransactionSummaryResponse>> getTransactionSummary() {
+        return ResponseEntity.ok(ApiResponse.success(
+                "입출금 통계 조회에 성공하였습니다.",
+                transactionService.getSummary()
         ));
     }
 

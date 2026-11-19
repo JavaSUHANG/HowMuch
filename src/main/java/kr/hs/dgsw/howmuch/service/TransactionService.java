@@ -1,6 +1,7 @@
 package kr.hs.dgsw.howmuch.service;
 
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 
@@ -13,4 +14,5 @@ public interface TransactionService {
     List<Transaction> findAll();
     List<Transaction> findByYearAndMonth(int year, int month);
     Transaction findById(Long id);
+    TransactionSummaryResponse getSummary();
 }

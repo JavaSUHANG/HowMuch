@@ -1,8 +1,10 @@
 package kr.hs.dgsw.howmuch.service;
 
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
+import kr.hs.dgsw.howmuch.entity.TransactionType;
 import kr.hs.dgsw.howmuch.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,5 +74,19 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction findById(Long id) {
         return transactionRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public TransactionSummaryResponse getSummary() {
+        long totalIncome = 0;
+        long totalExpense = 0;
+        for (Transaction transaction : transactionRepository.findAll()) {
+            if (transaction.getTransactionType() == TransactionType.INCOME) {
+                totalIncome += transaction.getAmount();
+            } else {
+                totalExpense += transaction.getAmount();
+            }
+        }
+        return new TransactionSummaryResponse(totalIncome, totalExpense, totalIncome - totalExpense);
     }
 }

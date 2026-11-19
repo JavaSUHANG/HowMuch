@@ -9,6 +9,7 @@ import kr.hs.dgsw.howmuch.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -88,5 +89,10 @@ public class TransactionServiceImpl implements TransactionService {
             }
         }
         return new TransactionSummaryResponse(totalIncome, totalExpense, totalIncome - totalExpense);
+    }
+
+    @Override
+    public List<Transaction> findByPeriod(LocalDate start, LocalDate end) {
+        return transactionRepository.findByTransactionDateBetween(start, end);
     }
 }

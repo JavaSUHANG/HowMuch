@@ -62,4 +62,15 @@ public class Transaction {
         this(amount, transactionType, category, description);
         this.transactionDate = transactionDate;
     }
+
+    public void update(int amount, TransactionType transactionType, String category, String description,
+                       LocalDate transactionDate) {
+        this.amount = amount;
+        this.transactionType = transactionType;
+        this.category = category;
+        this.description = description;
+        if (transactionDate != null) {
+            this.transactionDate = transactionDate;
+        }
+    }
 }

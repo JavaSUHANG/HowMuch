@@ -1,6 +1,6 @@
 package kr.hs.dgsw.howmuch.dto;
 
-public record TransactionSummaryResponse(
+public record TransactionSummaryResponseDTO(
         long totalIncome,
         long totalExpense,
         long balance

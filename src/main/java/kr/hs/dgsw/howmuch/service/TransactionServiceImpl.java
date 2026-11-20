@@ -1,7 +1,7 @@
 package kr.hs.dgsw.howmuch.service;
 
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
-import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponse;
+import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponseDTO;
 import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.entity.TransactionType;
@@ -78,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionSummaryResponse getSummary() {
+    public TransactionSummaryResponseDTO getSummary() {
         long totalIncome = 0;
         long totalExpense = 0;
         for (Transaction transaction : transactionRepository.findAll()) {
@@ -88,7 +88,7 @@ public class TransactionServiceImpl implements TransactionService {
                 totalExpense += transaction.getAmount();
             }
         }
-        return new TransactionSummaryResponse(totalIncome, totalExpense, totalIncome - totalExpense);
+        return new TransactionSummaryResponseDTO(totalIncome, totalExpense, totalIncome - totalExpense);
     }
 
     @Override

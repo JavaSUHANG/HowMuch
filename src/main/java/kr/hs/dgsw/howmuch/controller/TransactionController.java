@@ -2,11 +2,13 @@ package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.dto.ApiResponse;
 import kr.hs.dgsw.howmuch.dto.TransactionCreateRequest;
+import kr.hs.dgsw.howmuch.dto.TransactionSummaryResponseDTO;
 import kr.hs.dgsw.howmuch.dto.TransactionUpdateRequestDto;
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.service.TransactionExportService;
 import kr.hs.dgsw.howmuch.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.io.IOException;
 import java.util.List;
 
@@ -107,6 +110,29 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(
                 "월별 입출금 내역 조회에 성공하였습니다.",
                 transactionService.findByYearAndMonth(year, month)
+        ));
+    }
+
+    @GetMapping("/period")
+    public ResponseEntity<ApiResponse<List<Transaction>>> getPeriodTransactions(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
+    ) {
+        if (start.isAfter(end)) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.fail("시작 날짜는 종료 날짜보다 이후일 수 없습니다."));
+        }
+        return ResponseEntity.ok(ApiResponse.success(
+                "기간별 입출금 내역 조회에 성공하였습니다.",
+                transactionService.findByPeriod(start, end)
+        ));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<ApiResponse<TransactionSummaryResponseDTO>> getTransactionSummary() {
+        return ResponseEntity.ok(ApiResponse.success(
+                "입출금 통계 조회에 성공하였습니다.",
+                transactionService.getSummary()
         ));
     }
 

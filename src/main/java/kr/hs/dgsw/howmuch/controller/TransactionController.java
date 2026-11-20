@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.io.IOException;
@@ -39,6 +40,23 @@ public class TransactionController {
         Transaction transaction = transactionService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("입출금 내역 등록에 성공하였습니다.", transaction));
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<List<Transaction>>> importTransactionsFromCsv(
+            @RequestParam("file") MultipartFile file
+    ) {
+        try {
+            List<Transaction> transactions = transactionService.importTransactionsFromCsv(file);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("입출금 내역 CSV 등록에 성공하였습니다.", transactions));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.fail(e.getMessage()));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.fail("CSV 파일을 읽는 중 오류가 발생하였습니다."));
+        }
     }
 
     @PutMapping("/{id}")

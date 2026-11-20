@@ -2,6 +2,7 @@ package kr.hs.dgsw.howmuch.controller;
 
 import kr.hs.dgsw.howmuch.entity.Transaction;
 import kr.hs.dgsw.howmuch.entity.TransactionType;
+import kr.hs.dgsw.howmuch.service.TransactionExportService;
 import kr.hs.dgsw.howmuch.service.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TransactionController.class)
+@MockitoBean(types = TransactionExportService.class)
 class TransactionControllerTest {
     @Autowired
     private MockMvc mvc;
